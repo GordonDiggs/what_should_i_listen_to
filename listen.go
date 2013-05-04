@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 )
 
@@ -17,7 +18,9 @@ const (
       <head>
         <title>What should I listen to?</title>
         <style type='text/css'>
-          body { background: black; color: white; font-size: 36px; text-align:center; font-family: sans-serif; }
+          body { background: url({{.Url}}) no-repeat center center fixed;
+                 background-size: cover; background-color: black;
+                color: white; font-size: 36px; text-align:center; font-family: sans-serif; }
           em { color: yellow; }
           strong { color: red; }
         </style> 
@@ -35,20 +38,35 @@ const (
   `
 )
 
+type ImageResult struct {
+	Unescapedurl string
+}
+
+type ImageResults struct {
+	Results []ImageResult
+}
+
+type ResponseData struct {
+	ResponseData ImageResults
+}
+
 type Record struct {
 	Title  string
 	Artist string
 	Format string
 	Label  string
+	Url    string
 }
 
-/*
-func getAlbumArt(r Record) string {
-	q := url.QueryEscape(fmt.Sprintf("%s %s", r.Artist, r.Title))
+func (r *Record) GetAlbumArt() string {
+	var resp ResponseData
+	q := url.QueryEscape(fmt.Sprintf("%s %s cover", r.Artist, r.Title))
 	req_url := fmt.Sprintf("%s%s", GOOGLE_URL, q)
-	return req_url
+	response, _ := http.Get(req_url)
+	body, _ := ioutil.ReadAll(response.Body)
+	json.Unmarshal(body, &resp)
+	return resp.ResponseData.Results[0].Unescapedurl
 }
-*/
 
 func GetRecord() Record {
 	var r Record
@@ -60,6 +78,7 @@ func GetRecord() Record {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	record := GetRecord()
+	record.Url = record.GetAlbumArt()
 	t := template.New("Record Template")
 	t, _ = t.Parse(INDEX)
 	t.Execute(w, record)
