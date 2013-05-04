@@ -20,19 +20,17 @@ const (
         <style type='text/css'>
           body { background: url({{.Url}}) no-repeat center center fixed;
                  background-size: cover; background-color: black;
-                color: white; font-size: 36px; text-align:center; font-family: sans-serif; }
-          em { color: yellow; }
-          strong { color: red; }
+                 color: black; font-size: 36px; text-align:center; font-family: sans-serif; }
+          div { width: 500px; margin: 0 auto; margin-top: 20px; padding: 15px; opacity: 0.6; background: white; border-radius: 10px; }
+          em, strong { color: red; }
         </style> 
       </head>
       <body>
-        <p>
+        <div>
           You should listen to <em>{{.Title}}</em>
-          <br>
           by <strong>{{.Artist}}</strong> on {{.Label}}.
-          <br>
           It is a {{.Format}} record.
-        </p>
+        </div>
       </body>
     </html>
   `
