@@ -18,10 +18,16 @@ const (
       <head>
         <title>What should I listen to?</title>
         <style type='text/css'>
-          body { background: url({{.Url}}) no-repeat center center fixed;
+          html { height: 100%; }
+          body { display: -webkit-box; display: -webkit-flex;
+                 -webkit-align-items: center;
+                 -webkit-box-align: center; -moz-box-align: center;
+                 -webkit-box-pack: center; -webkit-justify-content: center;
+                 margin: 0; height: 100%; width: 100%;
+                 background: url({{.Url}}) no-repeat center center fixed;
                  background-size: cover; background-color: black;
                  color: black; font-size: 36px; text-align:center; font-family: sans-serif; }
-          div { width: 500px; margin: 0 auto; margin-top: 20px; padding: 15px; opacity: 0.6; background: white; border-radius: 10px; }
+          div { width: 500px; margin: 0 auto; margin-top: 20px; padding: 25px; opacity: 0.6; background: white; border-radius: 10px; }
           em, strong { color: red; }
         </style> 
       </head>
